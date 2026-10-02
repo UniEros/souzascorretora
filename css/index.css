@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap');
+
+:root {
+    --altura-header: 70px;
+    --azul: #19305c;
+    --cinza: #979797;
+}
+
+* {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+}
+
+/* O Bootstrap define peso 500 nos títulos; aqui mantemos o visual original (300) */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 300;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background-color: var(--azul);
+    color: #000;
+    line-height: normal; /* mantém o espaçamento original (Bootstrap usa 1.5) */
+}
+
+/* ---------- Header ---------- */
+header {
+    padding: 0;
+    box-shadow: 0 0 10px black;
+}
+
+#div-esq {
+    background-color: var(--azul);
+    height: var(--altura-header);
+    width: clamp(24px, 7vw, 100px);
+    flex-shrink: 0;
+}
+
+#div-dir {
+    background-color: var(--cinza);
+    height: var(--altura-header);
+    flex: 1 1 auto;
+}
+
+#titulo {
+    background-color: var(--cinza);
+    height: var(--altura-header);
+    flex-shrink: 0;
+}
+
+#titulo img {
+    flex-shrink: 0;
+}
+
+#titulo h2 {
+    margin: 0 0 0 clamp(12px, 3.5vw, 50px);
+    padding: 0;
+    color: white;
+    font-size: clamp(1rem, 5vw, 1.5rem);
+    font-weight: 300;
+    letter-spacing: clamp(1px, 0.3vw, 2px);
+    white-space: nowrap;
+    line-height: normal;
+}
+
+/* ---------- Conteúdo principal ---------- */
+main {
+    /* a 1ª tela fica livre (azul) e só 50px do conteúdo aparecem embaixo, como antes */
+    margin-top: calc(100vh - 50px);
+    margin-top: calc(100svh - 50px);
+    background-image: url(../img/background.jpg);
+    background-size: cover;
+    background-position: bottom;
+    background-attachment: fixed;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: calc(var(--altura-header) + 2.5rem) 0 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ---------- Seta ---------- */
+#seta {
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1020;
+    pointer-events: none; /* a faixa toda não bloqueia cliques no conteúdo */
+}
+
+#seta > img {
+    animation: jumping 1s linear infinite;
+    cursor: pointer;
+}
+
+#seta > img:not(.oculto) {
+    pointer-events: auto;
+}
+
+@keyframes jumping {
+    from {transform: translateY(-15px);}
+    50% {transform: translateY(0);}
+    to {transform: translateY(-15px);}
+}
+
+/* ---------- Quem somos / Redes ---------- */
+#primeiras-infos {
+    max-width: 1200px;
+}
+
+#quem-somos h2,
+#redes h2 {
+    margin: 0 0 0.83em 0;
+    font-size: 1.5rem;
+    line-height: normal;
+}
+
+
+#quem-somos p {
+    margin: 1em 0;
+}
+
+.divisoria {
+    background-color: var(--cinza);
+    border-radius: 10px;
+    width: 100%;
+    height: 5px;
+}
+
+.redes {
+    padding: 10px 17px;
+    border: 2px solid var(--cinza);
+    border-radius: 10px;
+}
+
+.redes * {
+    color: black;
+    text-decoration: none;
+}
+
+.redes h3 {
+    margin: 0;
+    font-size: 1.17rem;
+    line-height: normal;
+    overflow-wrap: break-word;
+}
+
+.main-infos {
+    flex-shrink: 0; /* "Whatsapp / Facebook / Instagram" nunca são quebrados */
+}
+
+.redes img {
+    border-radius: 5px;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+footer {
+    margin-top: 50px;
+}
+
+.oculto {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* ---------- Desktop (≥ 992px): divisória vertical ---------- */
+@media (min-width: 992px) {
+    .divisoria {
+        width: 5px;
+        height: auto;
+    }
+}
+
+/* ---------- Tablet/celular (< 992px) ---------- */
+@media (max-width: 991.98px) {
+    /* "background-attachment: fixed" é ignorado/bugado em iOS e Android */
+    main {
+        background-attachment: scroll;
+    }
+}
