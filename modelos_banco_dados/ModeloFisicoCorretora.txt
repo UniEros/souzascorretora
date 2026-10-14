@@ -1,0 +1,186 @@
+CREATE DATABASE corretora_seguros;
+USE corretora_seguros;
+
+CREATE TABLE funcionario (
+    id_funcionario INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) UNIQUE NOT NULL,
+    senha VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE segurado (
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) UNIQUE,
+    cnpj VARCHAR(18) UNIQUE,
+    nome_empresa VARCHAR(100),
+    nome_condominio VARCHAR(100),
+    nascimento DATE,
+    genero VARCHAR(20),
+    estado_civil VARCHAR(30),
+    cep VARCHAR(10),
+    nacionalidade VARCHAR(50),
+    ocupacao VARCHAR(50),
+    renda_mensal DECIMAL(10,2),
+    data_admissao DATE,
+    reside_no_imovel BOOLEAN
+);
+
+CREATE TABLE contato (
+    id_contato INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT,
+    email VARCHAR(100),
+    telefone_celular VARCHAR(20),
+    telefone_fixo VARCHAR(20),
+    FOREIGN KEY (id_cliente) REFERENCES segurado(id_cliente)
+);
+
+CREATE TABLE perfil (
+    id_perfil INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT,
+    peso DECIMAL(5,2),
+    altura DECIMAL(4,2),
+    renda_mensal DECIMAL(10,2),
+    fumante BOOLEAN,
+    esporte VARCHAR(50),
+    profissao VARCHAR(50),
+    FOREIGN KEY (id_cliente) REFERENCES segurado(id_cliente)
+);
+
+CREATE TABLE seguro (
+    id_seguro INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT,
+    id_funcionario INT,
+    tipo_seguro VARCHAR(50),
+    vigencia_inicial DATE,
+    vigencia_final DATE,
+    banco_maior_relacionamento VARCHAR(50),
+    observacoes TEXT,
+    seguro_desejado VARCHAR(50),
+    FOREIGN KEY (id_cliente) REFERENCES segurado(id_cliente),
+    FOREIGN KEY (id_funcionario) REFERENCES funcionario(id_funcionario)
+);
+
+CREATE TABLE veiculo (
+    id_veiculo INT AUTO_INCREMENT PRIMARY KEY,
+    id_seguro INT,
+    placa VARCHAR(10) UNIQUE,
+    chassi VARCHAR(30) UNIQUE,
+    marca VARCHAR(50),
+    modelo VARCHAR(50),
+    ano_fabricacao INT,
+    ano_modelo INT,
+    combustivel VARCHAR(30),
+    codigo_fipe VARCHAR(20),
+    zerokm BOOLEAN,
+    blindado BOOLEAN,
+    financiado BOOLEAN,
+    rastreador BOOLEAN,
+    dispositivo_antifurto BOOLEAN,
+    possui_kit_gas BOOLEAN,
+    cep_pernoite VARCHAR(10),
+    FOREIGN KEY (id_seguro) REFERENCES seguro(id_seguro)
+);
+
+CREATE TABLE condutor_principal (
+    id_condutor INT AUTO_INCREMENT PRIMARY KEY,
+    id_veiculo INT,
+    relacao_condutor VARCHAR(50),
+    nome VARCHAR(100),
+    cpf VARCHAR(14),
+    estado_civil VARCHAR(30),
+    genero VARCHAR(20),
+    nascimento DATE,
+    tempo_habilitacao INT,
+    FOREIGN KEY (id_veiculo) REFERENCES veiculo(id_veiculo)
+);
+
+CREATE TABLE imovel (
+    id_imovel INT AUTO_INCREMENT PRIMARY KEY,
+    id_seguro INT,
+    cep VARCHAR(10),
+    numero VARCHAR(10),
+    complemento VARCHAR(50),
+    logradouro VARCHAR(100),
+    bairro VARCHAR(50),
+    cidade VARCHAR(50),
+    uf VARCHAR(2),
+    tipo_residencia VARCHAR(50),
+    tipo_construcao VARCHAR(50),
+    tipo_ocupacao VARCHAR(50),
+    finalidade VARCHAR(50),
+    tipo VARCHAR(50),
+    local VARCHAR(50),
+    motivo VARCHAR(50),
+    andar INT,
+    ano_construcao INT,
+    area_construida DECIMAL(10,2),
+    qtd_funcionarios INT,
+    qtd_socios INT,
+    qtd_unidades_por_pavimento INT,
+    equipamentos_seguranca TEXT,
+    equipamentos_incendio TEXT,
+    FOREIGN KEY (id_seguro) REFERENCES seguro(id_seguro)
+);
+
+CREATE TABLE questionario_imovel (
+    id_questionario INT AUTO_INCREMENT PRIMARY KEY,
+    id_imovel INT,
+    proprietario_imovel BOOLEAN,
+    situacao_imovel VARCHAR(50),
+    proximo_area_risco BOOLEAN,
+    zona_rural BOOLEAN,
+    condominio_fechado BOOLEAN,
+    imovel_tombado BOOLEAN,
+    atividade_profissional_residencia BOOLEAN,
+    deposito_materiais_exclusivo BOOLEAN,
+    estrutura_metalica BOOLEAN,
+    possui_caixa_eletronico BOOLEAN,
+    possui_isopainel BOOLEAN,
+    historico_desmoronamento_alagamento BOOLEAN,
+    condominio_possui_area_comercial BOOLEAN,
+    FOREIGN KEY (id_imovel) REFERENCES imovel(id_imovel)
+);
+
+CREATE TABLE viagem (
+    id_viagem INT AUTO_INCREMENT PRIMARY KEY,
+    id_seguro INT,
+    motivo_viagem VARCHAR(100),
+    meio_transporte VARCHAR(50),
+    tipo_viagem VARCHAR(50),
+    estado_origem VARCHAR(2),
+    partida DATE,
+    retorno DATE,
+    total_passageiros INT,
+    passageiro_idade VARCHAR(50),
+    esportes_aventura BOOLEAN,
+    utiliza_motocicleta BOOLEAN,
+    FOREIGN KEY (id_seguro) REFERENCES seguro(id_seguro)
+);
+
+CREATE TABLE bicicleta (
+    id_bicicleta INT AUTO_INCREMENT PRIMARY KEY,
+    id_seguro INT,
+    marca VARCHAR(50),
+    modelo VARCHAR(50),
+    tipo VARCHAR(50),
+    data_aquisicao DATE,
+    ano_fabricacao INT,
+    numero_serie VARCHAR(50),
+    local_compra VARCHAR(100),
+    valor_mercado DECIMAL(10,2),
+    estado_novo BOOLEAN,
+    nota_fiscal VARCHAR(50),
+    material_quadro VARCHAR(50),
+    configuracao TEXT,
+    FOREIGN KEY (id_seguro) REFERENCES seguro(id_seguro)
+);
+
+CREATE TABLE cobertura (
+    id_cobertura INT AUTO_INCREMENT PRIMARY KEY,
+    id_seguro INT,
+    assistencia VARCHAR(100),
+    valor_novo DECIMAL(10,2),
+    deseja_preencher_coberturas BOOLEAN,
+    FOREIGN KEY (id_seguro) REFERENCES seguro(id_seguro)
+);
