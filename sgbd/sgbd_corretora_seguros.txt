@@ -1,0 +1,353 @@
+SGBD - CORRETORA DE SEGUROS
+Banco de dados: corretora_seguros
+SGBD: MySQL
+
+============================================================
+1. INSERT - INSERIR DADOS
+============================================================
+
+USE corretora_seguros;
+
+-- 1. Funcionário
+INSERT INTO funcionario (id_funcionario, nome, cpf, senha)
+VALUES (1, 'Carlos Mendes', '123.456.789-00', 'hash_exemplo');
+
+-- 2. Segurado
+INSERT INTO segurado (
+    id_cliente, nome, cpf, nascimento, genero,
+    estado_civil, cep, nacionalidade, ocupacao, renda_mensal
+) VALUES (
+    1, 'Mariana Oliveira', '987.654.321-00', '1995-04-12',
+    'Feminino', 'Solteira', '13170-000', 'Brasileira',
+    'Analista de sistemas', 5500.00
+);
+
+-- 3. Contato
+INSERT INTO contato (
+    id_contato, id_cliente, email,
+    telefone_celular, telefone_fixo
+) VALUES (
+    1, 1, 'mariana@example.com', '(19) 99999-1234', NULL
+);
+
+-- 4. Perfil
+INSERT INTO perfil (
+    id_perfil, id_cliente, peso, altura,
+    renda_mensal, fumante, esporte, profissao
+) VALUES (
+    1, 1, 65.50, 1.68, 5500.00, FALSE,
+    'Caminhada', 'Analista de sistemas'
+);
+
+-- 5. Seguro
+INSERT INTO seguro (
+    id_seguro, id_cliente, id_funcionario, tipo_seguro,
+    vigencia_inicial, vigencia_final,
+    banco_maior_relacionamento, observacoes, seguro_desejado
+) VALUES (
+    1, 1, 1, 'Automóvel',
+    '2026-10-01', '2027-10-01',
+    'Banco do Brasil', 'Seguro para uso particular',
+    'Cobertura completa'
+);
+
+-- 6. Veículo
+INSERT INTO veiculo (
+    id_veiculo, id_seguro, placa, chassi, marca, modelo,
+    ano_fabricacao, ano_modelo, combustivel, codigo_fipe,
+    zerokm, blindado, financiado, rastreador,
+    dispositivo_antifurto, possui_kit_gas, cep_pernoite
+) VALUES (
+    1, 1, 'ABC1D23', '9BWZZZ377VT004251',
+    'Volkswagen', 'Polo', 2024, 2025, 'Flex',
+    '005340-0', FALSE, FALSE, FALSE, TRUE,
+    TRUE, FALSE, '13170-000'
+);
+
+-- 7. Condutor principal
+INSERT INTO condutor_principal (
+    id_condutor, id_veiculo, relacao_condutor, nome, cpf,
+    estado_civil, genero, nascimento, tempo_habilitacao
+) VALUES (
+    1, 1, 'Proprietária', 'Mariana Oliveira',
+    '987.654.321-00', 'Solteira', 'Feminino',
+    '1995-04-12', 8
+);
+
+-- 8. Imóvel
+INSERT INTO imovel (
+    id_imovel, id_seguro, cep, numero, complemento,
+    logradouro, bairro, cidade, uf, tipo_residencia,
+    tipo_construcao, tipo_ocupacao, finalidade, tipo, local,
+    motivo, andar, ano_construcao, area_construida,
+    qtd_funcionarios, qtd_socios,
+    qtd_unidades_por_pavimento,
+    equipamentos_seguranca, equipamentos_incendio
+) VALUES (
+    1, 1, '13170-000', '100', 'Casa 1',
+    'Rua das Flores', 'Centro', 'Sumaré', 'SP',
+    'Casa', 'Alvenaria', 'Habitual', 'Residencial',
+    'Residencial', 'Urbano', 'Moradia', 1, 2015,
+    120.00, 0, 0, 1, 'Alarme', 'Extintor'
+);
+
+-- 9. Questionário do imóvel
+INSERT INTO questionario_imovel (
+    id_questionario, id_imovel, proprietario_imovel,
+    situacao_imovel, proximo_area_risco, zona_rural,
+    condominio_fechado, imovel_tombado,
+    atividade_profissional_residencia,
+    deposito_materiais_exclusivo, estrutura_metalica,
+    possui_caixa_eletronico, possui_isopainel,
+    historico_desmoronamento_alagamento,
+    condominio_possui_area_comercial
+) VALUES (
+    1, 1, TRUE, 'Ocupado', FALSE, FALSE, FALSE, FALSE,
+    FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE
+);
+
+-- 10. Viagem
+INSERT INTO viagem (
+    id_viagem, id_seguro, motivo_viagem, meio_transporte,
+    tipo_viagem, estado_origem, partida, retorno,
+    total_passageiros, passageiro_idade,
+    esportes_aventura, utiliza_motocicleta
+) VALUES (
+    1, 1, 'Turismo', 'Avião', 'Internacional',
+    'SP', '2026-12-10', '2026-12-20',
+    2, '31 e 32 anos', FALSE, FALSE
+);
+
+-- 11. Bicicleta
+INSERT INTO bicicleta (
+    id_bicicleta, id_seguro, marca, modelo, tipo,
+    data_aquisicao, ano_fabricacao, numero_serie,
+    local_compra, valor_mercado, estado_novo,
+    nota_fiscal, material_quadro, configuracao
+) VALUES (
+    1, 1, 'Caloi', 'Elite', 'Mountain bike',
+    '2025-05-10', 2025, 'BIC2025001',
+    'Loja de bicicletas', 3500.00, TRUE,
+    'NF12345', 'Alumínio', '21 velocidades'
+);
+
+-- 12. Cobertura
+INSERT INTO cobertura (
+    id_cobertura, id_seguro, assistencia,
+    valor_novo, deseja_preencher_coberturas
+) VALUES (
+    1, 1, 'Assistência 24 horas', 50000.00, TRUE
+);
+
+
+============================================================
+2. SELECT - CONSULTAR DADOS
+============================================================
+
+-- 2.1. Consultar todos os funcionários
+SELECT * FROM funcionario;
+
+-- 2.2. Consultar segurados
+SELECT id_cliente, nome, cpf, ocupacao, renda_mensal
+FROM segurado;
+
+-- 2.3. Segurados com renda superior a R$ 3.000
+SELECT nome, ocupacao, renda_mensal
+FROM segurado
+WHERE renda_mensal > 3000.00
+ORDER BY renda_mensal DESC;
+
+-- 2.4. Seguros, segurados e funcionários responsáveis
+SELECT
+    s.id_seguro,
+    c.nome AS segurado,
+    f.nome AS funcionario,
+    s.tipo_seguro,
+    s.vigencia_inicial,
+    s.vigencia_final
+FROM seguro s
+INNER JOIN segurado c
+    ON s.id_cliente = c.id_cliente
+INNER JOIN funcionario f
+    ON s.id_funcionario = f.id_funcionario;
+
+-- 2.5. Veículos e seus seguros
+SELECT
+    v.marca,
+    v.modelo,
+    v.placa,
+    v.ano_modelo,
+    s.tipo_seguro,
+    s.vigencia_final
+FROM veiculo v
+INNER JOIN seguro s
+    ON v.id_seguro = s.id_seguro;
+
+-- 2.6. Contatos de cada segurado
+SELECT
+    s.nome,
+    c.email,
+    c.telefone_celular,
+    c.telefone_fixo
+FROM segurado s
+LEFT JOIN contato c
+    ON s.id_cliente = c.id_cliente;
+
+-- 2.7. Seguros vigentes na data atual
+SELECT *
+FROM seguro
+WHERE CURDATE() BETWEEN vigencia_inicial AND vigencia_final;
+
+-- 2.8. Quantidade de seguros por tipo
+SELECT
+    tipo_seguro,
+    COUNT(*) AS quantidade
+FROM seguro
+GROUP BY tipo_seguro;
+
+-- 2.9. Imóveis com área construída superior a 100 m²
+SELECT
+    id_imovel,
+    logradouro,
+    cidade,
+    uf,
+    area_construida
+FROM imovel
+WHERE area_construida > 100;
+
+-- 2.10. Listar as tabelas do banco
+SHOW TABLES;
+
+
+============================================================
+3. ALTER TABLE - ALTERAR A ESTRUTURA
+============================================================
+
+-- 3.1. Adicionar e-mail ao funcionário
+ALTER TABLE funcionario
+ADD COLUMN email VARCHAR(100);
+
+-- 3.2. Aumentar o tamanho do nome do segurado
+ALTER TABLE segurado
+MODIFY COLUMN nome VARCHAR(150) NOT NULL;
+
+-- 3.3. Adicionar valor do prêmio ao seguro
+ALTER TABLE seguro
+ADD COLUMN valor_premio DECIMAL(10,2);
+
+-- 3.4. Adicionar observações ao funcionário
+ALTER TABLE funcionario
+ADD COLUMN observacoes TEXT;
+
+-- 3.5. Remover a coluna de observações criada no exemplo 3.4
+-- ATENÇÃO: este comando apaga a coluna e os dados nela armazenados.
+ALTER TABLE funcionario
+DROP COLUMN observacoes;
+
+
+============================================================
+4. DELETE - EXCLUIR REGISTROS
+============================================================
+
+-- ATENÇÃO:
+-- Execute DELETE somente em dados de teste ou após fazer backup.
+-- A cláusula WHERE é importante para não excluir todos os registros.
+
+-- 4.1. Excluir um contato específico
+DELETE FROM contato
+WHERE id_contato = 1;
+
+-- 4.2. Excluir um veículo pela placa
+-- Se houver condutor associado, exclua o condutor primeiro.
+DELETE FROM veiculo
+WHERE placa = 'ABC1D23';
+
+-- 4.3. Excluir todos os contatos de um segurado
+DELETE FROM contato
+WHERE id_cliente = 1;
+
+-- 4.4. Excluir o seguro de ID 1 e seus registros dependentes
+-- Execute este bloco apenas se quiser apagar os dados de teste associados.
+START TRANSACTION;
+
+DELETE FROM condutor_principal
+WHERE id_veiculo IN (
+    SELECT id_veiculo
+    FROM veiculo
+    WHERE id_seguro = 1
+);
+
+DELETE FROM questionario_imovel
+WHERE id_imovel IN (
+    SELECT id_imovel
+    FROM imovel
+    WHERE id_seguro = 1
+);
+
+DELETE FROM veiculo WHERE id_seguro = 1;
+DELETE FROM imovel WHERE id_seguro = 1;
+DELETE FROM viagem WHERE id_seguro = 1;
+DELETE FROM bicicleta WHERE id_seguro = 1;
+DELETE FROM cobertura WHERE id_seguro = 1;
+
+DELETE FROM seguro WHERE id_seguro = 1;
+
+COMMIT;
+
+-- 4.5. Excluir um segurado e seus dados relacionados
+-- Pressupõe que os seguros desse cliente já foram removidos.
+START TRANSACTION;
+
+DELETE FROM contato
+WHERE id_cliente = 1;
+
+DELETE FROM perfil
+WHERE id_cliente = 1;
+
+DELETE FROM segurado
+WHERE id_cliente = 1;
+
+COMMIT;
+
+-- 4.6. Excluir um funcionário
+-- Só funciona se não houver seguros vinculados a ele.
+DELETE FROM funcionario
+WHERE id_funcionario = 1;
+
+
+============================================================
+5. RESUMO DOS COMANDOS
+============================================================
+
+INSERT INTO       - Insere registros.
+SELECT            - Consulta dados.
+WHERE             - Filtra registros.
+ORDER BY          - Ordena resultados.
+INNER JOIN        - Consulta registros relacionados em tabelas.
+LEFT JOIN         - Mantém todos os registros da tabela à esquerda.
+GROUP BY          - Agrupa resultados.
+COUNT()           - Conta registros.
+ALTER TABLE       - Altera a estrutura de uma tabela.
+ADD COLUMN        - Adiciona uma coluna.
+MODIFY COLUMN     - Modifica uma coluna.
+DROP COLUMN       - Remove uma coluna.
+DELETE FROM       - Exclui registros.
+START TRANSACTION - Inicia uma transação.
+COMMIT            - Confirma as operações da transação.
+
+
+============================================================
+OBSERVAÇÕES IMPORTANTES
+============================================================
+
+1. Os dados usados nos INSERTs são fictícios.
+2. Os INSERTs informam IDs manualmente para facilitar os exemplos.
+   Execute-os em um banco vazio ou ajuste os IDs conforme os dados existentes.
+3. Os exemplos associam um mesmo seguro a veículo, imóvel, viagem e bicicleta
+   apenas para demonstrar os relacionamentos. Em um sistema real, use vínculos
+   coerentes com a modalidade de cada seguro.
+4. Os ALTER TABLE de adição de colunas devem ser executados apenas uma vez.
+5. Os DELETEs removem dados. Teste em uma cópia do banco e faça backup antes.
+6. As chaves estrangeiras impedem excluir registros que ainda tenham registros
+   dependentes, a menos que a operação seja tratada primeiro.
+7. O campo senha deve guardar um hash seguro, e não uma senha em texto puro.
