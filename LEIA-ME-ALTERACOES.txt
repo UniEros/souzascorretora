@@ -1,0 +1,28 @@
+SOUZAS CORRETORA — ALTERAÇÕES IMPLEMENTADAS
+
+1. ORÇAMENTOS
+- Editar abre o orçamento selecionado no construtor.
+- É possível marcar e desmarcar os seguros e salvar as alterações.
+- Excluir remove o orçamento após confirmação.
+- Os orçamentos são separados por perfil: visitante, cliente, funcionário e administrador.
+- Para clientes autenticados, os orçamentos são separados pelo e-mail da conta.
+- Orçamentos antigos da chave compartilhada anterior são migrados para o perfil de visitante, pois a versão anterior não registrava a quem pertenciam.
+
+2. PEDIDOS E MEUS SEGUROS
+- Ao solicitar um orçamento, o pedido guarda o e-mail da conta do cliente autenticado (ou o e-mail informado no formulário).
+- Quando funcionário ou administrador finaliza o pedido, o sistema cria uma apólice e a vincula ao e-mail do cliente.
+- A apólice aparece em “Meus seguros” quando o cliente entra com essa mesma conta.
+- Para pedidos antigos que ainda não possuem e-mail associado, a finalização pede o e-mail do cliente.
+- Cancelar um pedido também marca como cancelada a apólice vinculada, para que ela deixe de aparecer como ativa.
+
+IMPORTANTE — LIMITAÇÃO DA VERSÃO ATUAL
+Este projeto é um protótipo front-end sem servidor ou banco de dados. As contas, orçamentos, pedidos e apólices são armazenados no localStorage do navegador. Portanto:
+- Os dados ficam apenas no navegador/dispositivo em que foram criados.
+- A separação por perfil/conta é funcional para demonstração nesse navegador, mas não substitui autenticação e autorização no servidor.
+- O seletor “Visualizar como” permite alternar perfis e não é um login seguro.
+- Não use esta versão para armazenar dados reais de clientes, senhas ou apólices. Para produção, será necessário integrar um backend e banco de dados, com autenticação e permissões por usuário.
+
+TESTE TÉCNICO REALIZADO
+- Verificação de sintaxe JavaScript (node --check).
+- Teste automatizado da separação de orçamentos entre visitante, clientes diferentes, funcionário e administrador.
+- Teste da criação de apólice na finalização e da exibição em “Meus seguros” para a conta correspondente.
